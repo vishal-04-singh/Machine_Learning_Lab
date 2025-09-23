@@ -1,0 +1,626 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{longtable}
+\usepackage{hyperref}
+\usepackage{xcolor}
+\usepackage{colortbl}
+\usepackage{listings}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{tcolorbox}
+\usepackage{enumitem}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+
+% Define custom colors
+\definecolor{primaryblue}{RGB}{44, 123, 182}
+\definecolor{secondaryblue}{RGB}{171, 205, 239}
+\definecolor{accentorange}{RGB}{255, 140, 0}
+\definecolor{darkgray}{RGB}{64, 64, 64}
+\definecolor{lightgray}{RGB}{245, 245, 245}
+\definecolor{successgreen}{RGB}{40, 167, 69}
+\definecolor{warningred}{RGB}{220, 53, 69}
+
+% Enhanced hyperref setup
+\hypersetup{
+    colorlinks=true,
+    linkcolor=primaryblue,
+    filecolor=primaryblue,
+    urlcolor=primaryblue,
+    citecolor=primaryblue,
+    pdftitle={Disease Risk Prediction - Regression Capstone Report},
+    pdfauthor={Machine Learning Laboratory},
+    pdfsubject={Health Data Analysis},
+    pdfkeywords={Machine Learning, Disease Prediction, Linear Regression, Healthcare}
+}
+
+% Set up headers and footers with enhanced styling
+\pagestyle{fancy}
+\fancyhf{}
+\rhead{
+    \begin{minipage}{0.7\textwidth}
+        \raggedleft
+        \color{primaryblue}\small\textbf{Disease Risk Prediction Project}
+    \end{minipage}
+    \begin{minipage}{0.25\textwidth}
+        \raggedleft
+        % Text-based logo (works immediately)
+        \colorbox{primaryblue}{\color{white}\small\textbf{ML Lab}}
+        
+        % Image logo (uncomment and replace with your logo file)
+        % \includegraphics[height=0.8cm]{your-logo.png}
+        
+        % Alternative text logos:
+        % {\color{primaryblue}\footnotesize\textbf{Your University}}
+        % \fbox{\color{primaryblue}\footnotesize\textbf{Institution}}
+    \end{minipage}
+}
+\lhead{\color{primaryblue}\small\textbf{Regression Capstone Report}}
+\cfoot{\color{darkgray}\textbf{\thepage}}
+\renewcommand{\headrulewidth}{1pt}
+\renewcommand{\headrule}{\hbox to\headwidth{\color{primaryblue}\leaders\hrule height \headrulewidth\hfill}}
+
+% Define a special page style for the first page (no logo)
+\fancypagestyle{firstpage}{
+    \fancyhf{}
+    \renewcommand{\headrulewidth}{0pt}
+    \renewcommand{\footrulewidth}{0pt}
+}
+
+% Enhanced code listings
+\lstset{
+    language=Python,
+    basicstyle=\ttfamily\small,
+    keywordstyle=\color{primaryblue}\bfseries,
+    commentstyle=\color{gray}\itshape,
+    stringstyle=\color{accentorange},
+    numbers=left,
+    numberstyle=\tiny\color{darkgray},
+    frame=single,
+    frameround=tttt,
+    rulecolor=\color{secondaryblue},
+    breaklines=true,
+    showstringspaces=false,
+    backgroundcolor=\color{lightgray},
+    captionpos=b,
+    tabsize=4,
+    xleftmargin=2em,
+    framexleftmargin=1.5em
+}
+
+% Enhanced section formatting
+\titleformat{\section}{\Large\bfseries\color{primaryblue}}{\thesection}{1em}{}[\color{primaryblue}\titlerule]
+\titleformat{\subsection}{\large\bfseries\color{darkgray}}{\thesubsection}{1em}{}
+\titleformat{\subsubsection}{\normalsize\bfseries\color{darkgray}}{\thesubsubsection}{1em}{}
+
+% Custom boxes for highlights
+\newtcolorbox{objectivebox}{
+    colback=secondaryblue!10,
+    colframe=primaryblue,
+    boxrule=1pt,
+    arc=3pt,
+    left=8pt,
+    right=8pt,
+    top=8pt,
+    bottom=8pt
+}
+
+\newtcolorbox{warningbox}{
+    colback=warningred!10,
+    colframe=warningred,
+    boxrule=1pt,
+    arc=3pt,
+    left=8pt,
+    right=8pt,
+    top=8pt,
+    bottom=8pt
+}
+
+\newtcolorbox{successbox}{
+    colback=successgreen!10,
+    colframe=successgreen,
+    boxrule=1pt,
+    arc=3pt,
+    left=8pt,
+    right=8pt,
+    top=8pt,
+    bottom=8pt
+}
+
+\newtcolorbox{infobox}{
+    colback=lightgray,
+    colframe=darkgray,
+    boxrule=1pt,
+    arc=3pt,
+    left=8pt,
+    right=8pt,
+    top=8pt,
+    bottom=8pt
+}
+
+% Enhanced table formatting
+\captionsetup[table]{
+    labelfont={bf,color=primaryblue},
+    textfont={color=darkgray}
+}
+
+% Custom list styling
+\setlist[itemize]{label=\color{primaryblue}$\bullet$}
+\setlist[enumerate]{label=\color{primaryblue}\arabic*.}
+
+\title{}
+\author{}
+\date{}
+
+% Custom title page to match the provided design
+\newcommand{\createcustomtitle}{
+    \begin{titlepage}
+        \centering
+        \vspace*{2cm}
+        
+        % University Name
+        {\Huge\bfseries\color{primaryblue} University of Petroleum and Energy Studies}\\[1.5cm]
+        
+        % University Logo placeholder (you can add actual logo here)
+        \vspace{1cm}
+        
+        % Batch
+        {\LARGE\color{darkgray}\textbf{Batch 2025 - 2027}}\\[1cm]
+        
+        % Department
+        {\large\color{darkgray}\textbf{Department : School of Computer Science}}\\[0.5cm]
+        
+        % Course
+        {\large\color{darkgray}\textbf{Course : MCA}}\\[2cm]
+        
+        % Assignment Title
+        \begin{tcolorbox}[
+            colback=primaryblue!10,
+            colframe=primaryblue,
+            boxrule=2pt,
+            arc=5pt,
+            width=0.8\textwidth,
+            halign=center
+        ]
+            {\huge\bfseries\color{primaryblue} Assignment}\\[0.5cm]
+            {\Large\color{darkgray} Health Lifestyle Disease Risk Prediction}\\[0.3cm]
+            {\large\color{darkgray} Using Linear Regression}\\[0.3cm]
+            {\normalsize\color{accentorange} Machine Learning Laboratory - Project 1}
+        \end{tcolorbox}
+        
+        \vspace{2cm}
+        
+        % Student Information
+        \begin{minipage}{0.45\textwidth}
+            \raggedright
+            {\large\textbf{Submitted By :}}\\[0.5cm]
+            {\large\textbf{Vishal Singh}}\\[0.3cm]
+            {\large 590028039}
+        \end{minipage}
+        \hfill
+        \begin{minipage}{0.45\textwidth}
+            \raggedleft
+            {\large\textbf{Submitted to :}}\\[0.5cm]
+            {\large\textbf{Manobendra Nath Mondal}}
+        \end{minipage}
+        
+        \vspace{\fill}
+        
+        % Date
+        {\large\textit{Submission Date: \today}}
+        
+    \end{titlepage}
+}
+
+\begin{document}
+
+\createcustomtitle
+
+% Add abstract
+\vspace{1cm}
+\begin{tcolorbox}[
+    colback=secondaryblue!10,
+    colframe=primaryblue,
+    boxrule=1pt,
+    arc=3pt,
+    title={\textbf{\large Abstract}},
+    fonttitle=\bfseries\color{white},
+    coltitle=white,
+    colbacktitle=primaryblue
+]
+This capstone project investigates the application of linear regression for predicting disease risk using comprehensive health and lifestyle data. Using a dataset of 100,000 health records with 16 features, we developed a baseline predictive model to assess binary disease risk outcomes. While the project successfully demonstrates the complete machine learning pipeline including data preprocessing, model training, and evaluation, the results reveal significant limitations of linear regression for binary classification tasks. The model achieved an R² score of -0.0003, highlighting the need for more appropriate classification algorithms. This work provides valuable insights into algorithm selection and establishes a foundation for future improvements using logistic regression, ensemble methods, and advanced feature engineering techniques.
+\end{tcolorbox}
+
+\newpage
+
+\tableofcontents
+\newpage
+
+\section{PROJECT TITLE}
+\textbf{Health Lifestyle Disease Risk Prediction Using Linear Regression}
+
+\section{OBJECTIVE}
+
+\begin{objectivebox}
+The primary objective of this project is to develop a predictive model that can assess disease risk based on various health and lifestyle factors.
+\end{objectivebox}
+
+\vspace{0.5cm}
+
+Specifically, the project aims to:
+
+\begin{enumerate}[leftmargin=1.5em]
+    \item \textbf{Build a machine learning model} to predict binary disease risk (0 = low risk, 1 = high risk)
+    \item \textbf{Identify key health indicators} that contribute most significantly to disease risk
+    \item \textbf{Analyze relationships} between lifestyle factors (exercise, sleep, diet) and health outcomes
+    \item \textbf{Create a baseline model} for future enhancement with more sophisticated algorithms
+    \item \textbf{Demonstrate the application} of linear regression in healthcare predictive analytics
+\end{enumerate}
+
+\begin{infobox}
+\textbf{Project Scope:} This project serves as an exploratory analysis and baseline establishment for disease risk prediction, focusing on understanding data patterns and model evaluation methodologies rather than achieving optimal predictive performance.
+\end{infobox}
+
+\section{DATASET DESCRIPTION}
+
+\subsection{Dataset Overview}
+\begin{infobox}
+\begin{itemize}[leftmargin=1em]
+    \item \textbf{Source:} Health Lifestyle Dataset (health\_lifestyle\_dataset.csv)
+    \item \textbf{Size:} 100,000 records with 16 features
+    \item \textbf{Data Quality:} Complete dataset with no missing values
+    \item \textbf{Target Variable:} \texttt{disease\_risk} (binary: 0 = low risk, 1 = high risk)
+    \item \textbf{Class Distribution:} 24.8\% high risk, 75.2\% low risk (imbalanced dataset)
+\end{itemize}
+\end{infobox}
+
+\subsection{Feature Description}
+The dataset contains comprehensive health and lifestyle information:
+
+\subsubsection{Demographic Features}
+\begin{itemize}
+    \item \texttt{age}: Age in years (18-79)
+    \item \texttt{gender}: Male/Female (encoded as gender\_num: 1=Male, 0=Female)
+\end{itemize}
+
+\subsubsection{Physical Health Metrics}
+\begin{itemize}
+    \item \texttt{bmi}: Body Mass Index (18.0-40.0)
+    \item \texttt{resting\_hr}: Resting heart rate (50-99 bpm)
+    \item \texttt{systolic\_bp}: Systolic blood pressure (90-179 mmHg)
+    \item \texttt{diastolic\_bp}: Diastolic blood pressure (60-119 mmHg)
+    \item \texttt{cholesterol}: Cholesterol level (150-299 mg/dL)
+\end{itemize}
+
+\subsubsection{Lifestyle Factors}
+\begin{itemize}
+    \item \texttt{daily\_steps}: Daily step count (1,000-19,999)
+    \item \texttt{sleep\_hours}: Sleep duration (3-10 hours)
+    \item \texttt{water\_intake\_l}: Daily water consumption (0.5-5.0 liters)
+    \item \texttt{calories\_consumed}: Daily calorie intake (1,200-3,999)
+\end{itemize}
+
+\subsubsection{Risk Factors}
+\begin{itemize}
+    \item \texttt{smoker}: Smoking status (binary: 0=non-smoker, 1=smoker)
+    \item \texttt{alcohol}: Alcohol consumption (binary: 0=no, 1=yes)
+    \item \texttt{family\_history}: Family history of disease (binary: 0=no, 1=yes)
+\end{itemize}
+
+\subsection{Statistical Summary}
+\begin{table}[H]
+\centering
+\caption{Dataset Statistical Summary}
+\begin{tabular}{>{\bfseries}l >{\centering}p{3cm} >{\centering\arraybackslash}p{3cm}}
+\toprule
+\rowcolor{primaryblue!20}
+\textbf{Feature} & \textbf{Mean} & \textbf{Standard Deviation} \\
+\midrule
+Age (years) & 48.5 & 17.9 \\
+\rowcolor{lightgray}
+BMI & 29.0 & 6.4 \\
+Daily Steps & 10,480 & 5,484 \\
+\rowcolor{lightgray}
+Sleep Hours & 6.5 & 2.0 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{successbox}
+\textbf{Data Quality Assessment:} The dataset demonstrates excellent quality with no missing values across all 100,000 records, providing a robust foundation for analysis.
+\end{successbox}
+
+\section{METHODOLOGY USED}
+
+\subsection{Data Preprocessing}
+\begin{enumerate}
+    \item \textbf{Data Loading}: Imported dataset using pandas
+    \item \textbf{Exploratory Data Analysis}: 
+    \begin{itemize}
+        \item Checked for missing values (none found)
+        \item Generated descriptive statistics
+        \item Created correlation heatmap
+        \item Performed outlier analysis using box plots
+    \end{itemize}
+    \item \textbf{Feature Engineering}:
+    \begin{itemize}
+        \item Converted categorical gender to numerical (gender\_num)
+        \item Selected 5 key features: age, bmi, daily\_steps, sleep\_hours, gender\_num
+    \end{itemize}
+\end{enumerate}
+
+\subsection{Model Development}
+\begin{enumerate}
+    \item \textbf{Algorithm Selection}: Linear Regression
+    \begin{itemize}
+        \item Chosen for simplicity and interpretability
+        \item Suitable for establishing baseline performance
+    \end{itemize}
+    
+    \item \textbf{Feature Selection}: 
+    \begin{itemize}
+        \item Used subset of available features (5 out of 15)
+        \item Features selected based on basic correlation analysis
+    \end{itemize}
+
+    \item \textbf{Data Splitting}:
+    \begin{itemize}
+        \item Train-test split: 80\% training, 20\% testing
+        \item Random state: 42 (for reproducibility)
+        \item Training samples: 80,000
+        \item Testing samples: 20,000
+    \end{itemize}
+
+    \item \textbf{Model Training}:
+    \begin{itemize}
+        \item Fitted scikit-learn LinearRegression model
+        \item No hyperparameter tuning required
+    \end{itemize}
+
+    \item \textbf{Model Evaluation}:
+    \begin{itemize}
+        \item Primary metrics: $R^2$ Score, Mean Absolute Error (MAE)
+        \item Cross-validation: 5-fold cross-validation
+        \item Residual analysis for model diagnostics
+    \end{itemize}
+\end{enumerate}
+
+\section{SOURCE CODE}
+
+\subsection{Key Code Components}
+
+\subsubsection{Data Loading and Exploration}
+\begin{lstlisting}
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LinearRegression
+from sklearn.metrics import r2_score, mean_absolute_error
+
+df = pd.read_csv("health_lifestyle_dataset.csv")
+print(f"Dataset has {len(df)} rows and {len(df.columns)} columns")
+\end{lstlisting}
+
+\subsubsection{Feature Engineering}
+\begin{lstlisting}
+df['gender_num'] = (df['gender'] == 'Male').astype(int)
+features = ['age', 'bmi', 'daily_steps', 'sleep_hours', 'gender_num']
+X = df[features]
+y = df['disease_risk']
+\end{lstlisting}
+
+\subsubsection{Model Training}
+\begin{lstlisting}
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.2, random_state=42)
+model = LinearRegression()
+model.fit(X_train, y_train)
+\end{lstlisting}
+
+\subsubsection{Model Evaluation}
+\begin{lstlisting}
+from sklearn.model_selection import cross_val_score
+
+y_pred = model.predict(X_test)
+r2 = r2_score(y_test, y_pred)
+mae = mean_absolute_error(y_test, y_pred)
+cv_scores = cross_val_score(model, X, y, cv=5, scoring="r2")
+\end{lstlisting}
+
+\section{RESULT DISCUSSION}
+
+\subsection{Model Performance Metrics}
+\begin{table}[H]
+\centering
+\caption{Model Performance Results}
+\begin{tabular}{>{\bfseries}l >{\centering\arraybackslash}p{4cm}}
+\toprule
+\rowcolor{warningred!20}
+\textbf{Metric} & \textbf{Value} \\
+\midrule
+$R^2$ Score & \textcolor{warningred}{\textbf{-0.0003}} \\
+\rowcolor{lightgray}
+Mean Absolute Error & \textcolor{warningred}{\textbf{0.3731}} \\
+Cross-Validated $R^2$ & \textcolor{warningred}{\textbf{-0.0001 ($\pm$0.0001)}} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{warningbox}
+\textbf{Performance Alert:} The negative R² score indicates that the model performs worse than simply predicting the mean value, highlighting fundamental issues with the approach.
+\end{warningbox}
+
+\subsection{Feature Importance (Coefficients)}
+\begin{table}[H]
+\centering
+\caption{Linear Regression Coefficients}
+\begin{tabular}{>{\bfseries}l >{\centering\arraybackslash}p{3cm}}
+\toprule
+\rowcolor{primaryblue!20}
+\textbf{Feature} & \textbf{Coefficient} \\
+\midrule
+Intercept & 0.2366 \\
+\rowcolor{lightgray}
+Age & 0.0001 \\
+BMI & 0.0003 \\
+\rowcolor{lightgray}
+Daily Steps & -0.0000 \\
+Sleep Hours & 0.0008 \\
+\rowcolor{lightgray}
+Gender (Male) & -0.0015 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{infobox}
+\textbf{Coefficient Analysis:} All feature coefficients are extremely small (near zero), indicating weak linear relationships between the selected features and disease risk.
+\end{infobox}
+
+\subsection{Critical Analysis}
+\begin{warningbox}
+The model performance is \textbf{extremely poor} with several critical issues:
+\end{warningbox}
+
+\vspace{0.5cm}
+
+\begin{enumerate}[leftmargin=1.5em]
+    \item \textbf{\textcolor{warningred}{Negative $R^2$ Score}}: Indicates the model performs worse than simply predicting the mean value
+    \item \textbf{\textcolor{warningred}{High Prediction Error}}: MAE of 0.37 for binary outcomes (0 or 1) is substantial
+    \item \textbf{\textcolor{accentorange}{Weak Feature Relationships}}: All coefficients are near zero, suggesting no meaningful linear relationships
+    \item \textbf{\textcolor{warningred}{Algorithm Mismatch}}: Linear regression is inappropriate for binary classification problems
+\end{enumerate}
+
+\subsection{Prediction Examples}
+Sample predictions show the model outputs continuous values around 0.25, failing to properly classify binary outcomes:
+
+\begin{table}[H]
+\centering
+\caption{Sample Predictions}
+\begin{tabular}{>{\centering}p{2cm} >{\centering\arraybackslash}p{2cm}}
+\toprule
+\rowcolor{primaryblue!20}
+\textbf{Actual} & \textbf{Predicted} \\
+\midrule
+\textcolor{successgreen}{\textbf{0}} & \textcolor{warningred}{0.252} \\
+\rowcolor{lightgray}
+\textcolor{warningred}{\textbf{1}} & \textcolor{warningred}{0.246} \\
+\textcolor{warningred}{\textbf{1}} & \textcolor{warningred}{0.243} \\
+\rowcolor{lightgray}
+\textcolor{successgreen}{\textbf{0}} & \textcolor{warningred}{0.253} \\
+\textcolor{successgreen}{\textbf{0}} & \textcolor{warningred}{0.245} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{warningbox}
+\textbf{Classification Issue:} The model fails to output discrete binary classifications (0 or 1), instead producing continuous values clustered around the dataset mean (0.248).
+\end{warningbox}
+
+\subsection{Residual Analysis}
+The residual plot (actual vs predicted scatter plot) would likely show:
+\begin{itemize}
+    \item Poor correlation between actual and predicted values
+    \item Random scatter indicating no learned patterns
+    \item Predictions clustered around the mean disease risk value
+\end{itemize}
+
+\section{CONCLUSION}
+
+\subsection{Project Assessment}
+While this project successfully demonstrates the complete machine learning pipeline from data loading to model evaluation, the \textbf{predictive performance is inadequate} for practical disease risk assessment.
+
+\subsection{Key Findings}
+\begin{enumerate}
+    \item \textbf{Algorithm Limitation}: Linear regression is fundamentally unsuitable for binary classification
+    \item \textbf{Feature Underutilization}: Only 5 of 16 available features were used
+    \item \textbf{Data Quality}: The dataset itself appears suitable with good quality and comprehensive health metrics
+    \item \textbf{Baseline Establishment}: The project provides a clear baseline for future improvements
+\end{enumerate}
+
+\subsection{Major Limitations}
+\begin{enumerate}
+    \item \textbf{Methodological}: Wrong algorithm choice for classification problem
+    \item \textbf{Feature Engineering}: Insufficient use of available health indicators
+    \item \textbf{Model Complexity}: Linear model too simplistic for complex health relationships
+    \item \textbf{Class Imbalance}: 75-25 distribution not addressed
+\end{enumerate}
+
+\subsection{Recommendations for Improvement}
+\begin{enumerate}
+    \item \textbf{Algorithm Change}: Switch to classification algorithms:
+    \begin{itemize}
+        \item Logistic Regression
+        \item Random Forest
+        \item Support Vector Machine
+        \item Gradient Boosting
+    \end{itemize}
+
+    \item \textbf{Feature Enhancement}:
+    \begin{itemize}
+        \item Include all relevant health metrics (blood pressure, cholesterol, family history)
+        \item Create interaction terms and polynomial features
+        \item Apply feature scaling/normalization
+    \end{itemize}
+
+    \item \textbf{Advanced Techniques}:
+    \begin{itemize}
+        \item Address class imbalance with SMOTE or class weighting
+        \item Implement proper classification metrics (accuracy, precision, recall, F1-score)
+        \item Use ROC-AUC for model comparison
+    \end{itemize}
+
+    \item \textbf{Model Validation}:
+    \begin{itemize}
+        \item Implement stratified cross-validation
+        \item Use confusion matrix analysis
+        \item Apply feature importance techniques
+    \end{itemize}
+\end{enumerate}
+
+\subsection{Learning Outcomes}
+\begin{successbox}
+This project successfully demonstrates:
+\end{successbox}
+
+\vspace{0.5cm}
+
+\begin{itemize}[leftmargin=1.5em]
+    \item \textcolor{successgreen}{\textbf{Complete ML workflow implementation}}
+    \item \textcolor{successgreen}{\textbf{Data exploration and visualization skills}}
+    \item \textcolor{successgreen}{\textbf{Model evaluation and interpretation}}
+    \item \textcolor{accentorange}{\textbf{Critical analysis of model limitations}}
+    \item \textcolor{primaryblue}{\textbf{Understanding of algorithm-problem matching importance}}
+\end{itemize}
+
+\vspace{0.5cm}
+
+\begin{infobox}
+\textbf{Educational Value:} The project serves as an excellent foundation for building more sophisticated disease risk prediction models and highlights the importance of proper algorithm selection in machine learning applications.
+\end{infobox}
+
+\vspace{1cm}
+\begin{tcolorbox}[
+    colback=accentorange!10,
+    colframe=accentorange,
+    boxrule=1pt,
+    arc=3pt,
+    title={\textbf{Final Note}},
+    fonttitle=\bfseries\color{white},
+    coltitle=white,
+    colbacktitle=accentorange
+]
+This project represents an initial exploration and baseline model. Future iterations should address the identified limitations to create a clinically viable disease risk prediction system.
+\end{tcolorbox}
+
+\end{document}
